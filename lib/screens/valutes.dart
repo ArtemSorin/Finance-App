@@ -21,19 +21,6 @@ class _MyAppState extends State<Valutes> {
     futureCoinsList = fetchCoinsList();
   }
 
-  List<Widget> indicators(imagesLength, currentIndex) {
-    return List<Widget>.generate(imagesLength, (index) {
-      return Container(
-        margin: EdgeInsets.all(3),
-        width: 10,
-        height: 10,
-        decoration: BoxDecoration(
-            color: currentIndex == index ? Colors.black : Colors.black26,
-            shape: BoxShape.circle),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -136,18 +123,22 @@ class _MyAppState extends State<Valutes> {
       ),
       home: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {},
+          ),
           actions: [
             IconButton(
                 onPressed: () => {},
                 icon: const Icon(
                   Icons.add_circle,
-                  color: Color.fromARGB(255, 91, 117, 240),
+                  color: Colors.white,
                 ))
           ],
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 91, 117, 240),
           title: const Text(
-            'Valutes App',
-            style: TextStyle(color: Colors.black),
+            'Finance App',
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: Center(

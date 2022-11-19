@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.5
   water_drop_nav_bar: ^2.2.0+4
   carousel_slider: ^4.1.1
+  syncfusion_flutter_charts: ^20.3.57
 
 dev_dependencies:
   flutter_test:

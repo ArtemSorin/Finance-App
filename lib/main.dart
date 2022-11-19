@@ -1,3 +1,4 @@
+import 'package:finance_app/screens/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:finance_app/screens/valutes.dart';
@@ -56,14 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           controller: pageController,
           children: <Widget>[
             const Valutes(),
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.favorite_rounded,
-                size: 56,
-                color: Colors.red[400],
-              ),
-            ),
+            const Chart(),
             Container(
               alignment: Alignment.center,
               child: Icon(
@@ -99,8 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
               outlinedIcon: Icons.home_outlined,
             ),
             BarItem(
-                filledIcon: Icons.favorite_rounded,
-                outlinedIcon: Icons.favorite_border_rounded),
+                filledIcon: Icons.pie_chart,
+                outlinedIcon: Icons.pie_chart_outline),
             BarItem(
               filledIcon: Icons.bookmark,
               outlinedIcon: Icons.bookmark_border_outlined,
