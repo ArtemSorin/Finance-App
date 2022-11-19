@@ -1,6 +1,8 @@
-# finance_app
+# Finance App
 
-A new Flutter project.
+Application for checking and control your finance as well as viewing the exchange rate.
+
+<img width="478" alt="Снимок экрана 2022-11-19 в 22 19 22" src="https://user-images.githubusercontent.com/95878097/202867938-b7a58e38-3427-41fd-aa08-19c2745ccdc9.png">
 
 ## Getting Started
 
