@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5
   water_drop_nav_bar: ^2.2.0+4
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:
