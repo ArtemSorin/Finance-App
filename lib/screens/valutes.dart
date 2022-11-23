@@ -1,25 +1,19 @@
 import 'dart:async';
 
-import 'package:finance_app/components/component.dart';
+import 'package:finance_app/components/com.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class Valutes extends StatefulWidget {
-  const Valutes({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<Valutes> createState() => _MyAppState();
+  State<Home> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<Valutes> {
-  late Future<CoinsList> futureCoinsList;
+class _MyAppState extends State<Home> {
   final ct = 3;
   final symbol = '₽';
-
-  @override
-  void initState() {
-    super.initState();
-    futureCoinsList = fetchCoinsList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +109,6 @@ class _MyAppState extends State<Valutes> {
             )),
       ),
     ];
-
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -142,97 +135,29 @@ class _MyAppState extends State<Valutes> {
           ),
         ),
         body: Center(
-          child: FutureBuilder<CoinsList>(
-            future: futureCoinsList,
+          child: FutureBuilder<List<Valutes>>(
+            future: fetchValutes(http.Client()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView(
-                  children: <Widget>[
-                    SizedBox(
-                      height: height * 0.35,
-                      child: Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: PageView.builder(
-                              itemCount: 2,
-                              pageSnapping: true,
-                              itemBuilder: (context, pagePosition) {
-                                return Container(
-                                    height: height * 0.35,
-                                    margin: const EdgeInsets.all(10),
-                                    child: items[pagePosition]);
-                              })),
-                    ),
-                    ListTile(
+                return ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ListTile(
                       leading: const CircleAvatar(
                         backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('¥'),
+                        child: Text('O'),
                       ),
-                      title: const Text(
-                        'JPY',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Text('Japanese yen'),
-                      trailing: Text(symbol +
-                          (1 / snapshot.data!.title['AUD'])
-                              .toStringAsFixed(ct)),
-                    ),
-                    ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('₼'),
-                      ),
-                      title: const Text(
-                        'AZN',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Text('Azerbaijani manat'),
-                      trailing: Text(symbol +
-                          (1 / snapshot.data!.title['AZN'])
-                              .toStringAsFixed(ct)),
-                    ),
-                    ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('￡'),
-                      ),
-                      title: const Text(
-                        'GPB',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Text('Pound sterling'),
-                      trailing: Text(symbol +
-                          (1 / snapshot.data!.title['GBP'])
-                              .toStringAsFixed(ct)),
-                    ),
-                    ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('€'),
-                      ),
-                      title: const Text(
-                        'EUR',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Text('Euro'),
-                      trailing: Text(symbol +
-                          (1 / snapshot.data!.title['EUR'])
-                              .toStringAsFixed(ct)),
-                    ),
-                    ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('₣'),
-                      ),
-                      title: const Text(
-                        'CHF',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Text('Swiss franc'),
-                      trailing: Text(symbol +
-                          (1 / snapshot.data!.title['CHF'])
-                              .toStringAsFixed(ct)),
-                    ),
-                  ],
+                      title: Text(snapshot.data![index].CharCode),
+                      subtitle: Text(snapshot.data![index].Name),
+                      onTap: () => {},
+                      trailing:
+                          Text(snapshot.data![index].Value.toStringAsFixed(3)),
+                    );
+                  },
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

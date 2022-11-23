@@ -1,105 +1,113 @@
-import 'package:finance_app/screens/businesschat.dart';
-import 'package:finance_app/screens/chart.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:finance_app/screens/valutes.dart';
-import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
+import 'dart:async';
+import 'dart:convert';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+Future<List<Photo>> fetchPhotos(http.Client client) async {
+  final response =
+      await client.get(Uri.parse('https://www.cbr-xml-daily.ru/daily_json.js'));
+
+  // Use the compute function to run parsePhotos in a separate isolate.
+  return compute(parsePhotos, response.body);
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// A function that converts a response body into a List<Photo>.
+List<Photo> parsePhotos(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        canvasColor: Colors.grey[200],
-      ),
-      home: const MyHomePage(),
+  return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
+}
+
+class Photo {
+  final String albumId;
+  final double id;
+  final String title;
+  final String url;
+  final String thumbnailUrl;
+
+  const Photo({
+    required this.albumId,
+    required this.id,
+    required this.title,
+    required this.url,
+    required this.thumbnailUrl,
+  });
+
+  factory Photo.fromJson(Map<String, dynamic> json) {
+    return Photo(
+      albumId: json['Valute']['AUD']['NumCode'] as String,
+      id: json['Valute']['AUD']['Value'] as double,
+      title: json['Valute']['AUD']['Name'] as String,
+      url: json['Valute']['AUD']['CharCode'] as String,
+      thumbnailUrl: json['Valute']['AUD']['ID'] as String,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+void main() => runApp(const MyApp());
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final Color navigationBarColor = Colors.white;
-  int selectedIndex = 0;
-  late PageController pageController;
-  @override
-  void initState() {
-    super.initState();
-    pageController = PageController(initialPage: selectedIndex);
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: navigationBarColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
+    const appTitle = 'Isolate Demo';
+
+    return const MaterialApp(
+      title: appTitle,
+      home: MyHomePage(title: appTitle),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: pageController,
-          children: <Widget>[
-            const Valutes(),
-            const Chart(),
-            const BusinessChat(),
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.folder_rounded,
-                size: 56,
-                color: Colors.blue[400],
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: WaterDropNavBar(
-          backgroundColor: navigationBarColor,
-          onItemSelected: (int index) {
-            setState(() {
-              selectedIndex = index;
-            });
-            pageController.animateToPage(selectedIndex,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeOutQuad);
-          },
-          selectedIndex: selectedIndex,
-          barItems: <BarItem>[
-            BarItem(
-              filledIcon: Icons.home_rounded,
-              outlinedIcon: Icons.home_outlined,
-            ),
-            BarItem(
-                filledIcon: Icons.pie_chart,
-                outlinedIcon: Icons.pie_chart_outline),
-            BarItem(
-              filledIcon: Icons.near_me,
-              outlinedIcon: Icons.near_me_outlined,
-            ),
-            BarItem(
-              filledIcon: Icons.person,
-              outlinedIcon: Icons.person_outline,
-            ),
-          ],
-        ),
+      body: FutureBuilder<List<Photo>>(
+        future: fetchPhotos(http.Client()),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error has occurred!'),
+            );
+          } else if (snapshot.hasData) {
+            return PhotosList(photos: snapshot.data!);
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
+    );
+  }
+}
+
+class PhotosList extends StatelessWidget {
+  const PhotosList({super.key, required this.photos});
+
+  final List<Photo> photos;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemCount: photos.length,
+      itemBuilder: (context, index) {
+        return Image.network(photos[index].title);
+      },
     );
   }
 }

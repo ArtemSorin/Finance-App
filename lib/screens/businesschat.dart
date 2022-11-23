@@ -65,8 +65,8 @@ class _BusinessChatState extends State<BusinessChat> {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                      shape: StadiumBorder()),
+                      backgroundColor: const Color.fromARGB(255, 91, 117, 240),
+                      shape: const StadiumBorder()),
                   child: Row(
                     children: const <Widget>[
                       Icon(
@@ -95,13 +95,13 @@ class _BusinessChatState extends State<BusinessChat> {
                 hintText: "Search...",
                 hintStyle: TextStyle(color: Colors.grey.shade600),
                 prefixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   color: Colors.grey.shade600,
                   onPressed: (() {}),
                 ),
                 filled: true,
                 fillColor: Colors.grey.shade100,
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40),
                     borderSide: BorderSide(color: Colors.grey.shade100)),
