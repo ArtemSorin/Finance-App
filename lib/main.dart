@@ -1,3 +1,4 @@
+import 'package:finance_app/screens/businesschat.dart';
 import 'package:finance_app/screens/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,21 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.white,
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: <Widget>[
             const Valutes(),
             const Chart(),
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.email_rounded,
-                size: 56,
-                color: Colors.green[400],
-              ),
-            ),
+            const BusinessChat(),
             Container(
               alignment: Alignment.center,
               child: Icon(
@@ -96,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 filledIcon: Icons.pie_chart,
                 outlinedIcon: Icons.pie_chart_outline),
             BarItem(
-              filledIcon: Icons.bookmark,
-              outlinedIcon: Icons.bookmark_border_outlined,
+              filledIcon: Icons.near_me,
+              outlinedIcon: Icons.near_me_outlined,
             ),
             BarItem(
               filledIcon: Icons.person,
