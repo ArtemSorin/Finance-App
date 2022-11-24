@@ -47,6 +47,16 @@ class _BusinessChatState extends State<BusinessChat> {
         secondaryText: "Thankyou, It's awesome",
         image: "images/userImage5.jpeg",
         time: "23 Mar"),
+    ChatUsers(
+        text: "Jorge Henry",
+        secondaryText: "Hey where are you?",
+        image: "images/userImage3.jpeg",
+        time: "31 Mar"),
+    ChatUsers(
+        text: "Philip Fox",
+        secondaryText: "Busy! Call me in 20 mins",
+        image: "images/userImage4.jpeg",
+        time: "28 Mar"),
   ];
   @override
   Widget build(BuildContext context) {
@@ -59,7 +69,7 @@ class _BusinessChatState extends State<BusinessChat> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 const Text(
-                  "Message",
+                  "Messenger",
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(

@@ -24,7 +24,7 @@ class _MyAppState extends State<Valutes> {
   List<Widget> indicators(imagesLength, currentIndex) {
     return List<Widget>.generate(imagesLength, (index) {
       return Container(
-        margin: EdgeInsets.all(3),
+        margin: const EdgeInsets.all(3),
         width: 10,
         height: 10,
         decoration: BoxDecoration(
