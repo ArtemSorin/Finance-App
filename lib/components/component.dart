@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<CoinsList> fetchCoinsList(http.Client client) async {
+Future<CoinsList> fetchCoinsList() async {
   final response =
       await http.get(Uri.parse('https://www.cbr-xml-daily.ru/latest.js'));
 

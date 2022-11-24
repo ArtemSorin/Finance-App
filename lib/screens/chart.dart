@@ -29,11 +29,8 @@ class _MyHomePageState extends State<_MyHomePage> {
         ),
         body: SfCartesianChart(
             primaryXAxis: CategoryAxis(),
-            // Chart title
             title: ChartTitle(text: 'Your expenses for the current period'),
-            // Enable legend
             legend: Legend(isVisible: true),
-            // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <ChartSeries<_Infections, String>>[
               LineSeries<_Infections, String>(

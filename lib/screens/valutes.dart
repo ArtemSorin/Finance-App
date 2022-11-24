@@ -1,19 +1,38 @@
 import 'dart:async';
 
-import 'package:finance_app/components/com.dart';
+import 'package:finance_app/components/component.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Valutes extends StatefulWidget {
+  const Valutes({super.key});
 
   @override
-  State<Home> createState() => _MyAppState();
+  State<Valutes> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<Home> {
+class _MyAppState extends State<Valutes> {
+  late Future<CoinsList> futureCoinsList;
   final ct = 3;
   final symbol = '₽';
+
+  @override
+  void initState() {
+    super.initState();
+    futureCoinsList = fetchCoinsList();
+  }
+
+  List<Widget> indicators(imagesLength, currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+            color: currentIndex == index ? Colors.black : Colors.black26,
+            shape: BoxShape.circle),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +128,7 @@ class _MyAppState extends State<Home> {
             )),
       ),
     ];
+
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -125,39 +145,107 @@ class _MyAppState extends State<Home> {
                 onPressed: () => {},
                 icon: const Icon(
                   Icons.add_circle,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 91, 117, 240),
                 ))
           ],
           backgroundColor: const Color.fromARGB(255, 91, 117, 240),
           title: const Text(
-            'Finance App',
+            'Valutes App',
             style: TextStyle(color: Colors.white),
           ),
         ),
         body: Center(
-          child: FutureBuilder<List<Valutes>>(
-            future: fetchValutes(http.Client()),
+          child: FutureBuilder<CoinsList>(
+            future: futureCoinsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListTile(
+                return ListView(
+                  children: <Widget>[
+                    SizedBox(
+                      height: height * 0.35,
+                      child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: PageView.builder(
+                              itemCount: 2,
+                              pageSnapping: true,
+                              itemBuilder: (context, pagePosition) {
+                                return Container(
+                                    height: height * 0.35,
+                                    margin: const EdgeInsets.all(10),
+                                    child: items[pagePosition]);
+                              })),
+                    ),
+                    ListTile(
                       leading: const CircleAvatar(
                         backgroundColor: Color.fromARGB(255, 91, 117, 240),
-                        child: Text('O'),
+                        child: Text('¥'),
                       ),
-                      title: Text(snapshot.data![index].CharCode),
-                      subtitle: Text(snapshot.data![index].Name),
-                      onTap: () => {},
-                      trailing:
-                          Text(snapshot.data![index].Value.toStringAsFixed(3)),
-                    );
-                  },
-                  itemCount: snapshot.data!.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                      title: const Text(
+                        'JPY',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Japanese yen'),
+                      trailing: Text(symbol +
+                          (1 / snapshot.data!.title['AUD'])
+                              .toStringAsFixed(ct)),
+                    ),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
+                        child: Text('₼'),
+                      ),
+                      title: const Text(
+                        'AZN',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Azerbaijani manat'),
+                      trailing: Text(symbol +
+                          (1 / snapshot.data!.title['AZN'])
+                              .toStringAsFixed(ct)),
+                    ),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
+                        child: Text('￡'),
+                      ),
+                      title: const Text(
+                        'GPB',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Pound sterling'),
+                      trailing: Text(symbol +
+                          (1 / snapshot.data!.title['GBP'])
+                              .toStringAsFixed(ct)),
+                    ),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
+                        child: Text('€'),
+                      ),
+                      title: const Text(
+                        'EUR',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Euro'),
+                      trailing: Text(symbol +
+                          (1 / snapshot.data!.title['EUR'])
+                              .toStringAsFixed(ct)),
+                    ),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 91, 117, 240),
+                        child: Text('₣'),
+                      ),
+                      title: const Text(
+                        'CHF',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Swiss franc'),
+                      trailing: Text(symbol +
+                          (1 / snapshot.data!.title['CHF'])
+                              .toStringAsFixed(ct)),
+                    ),
+                  ],
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
