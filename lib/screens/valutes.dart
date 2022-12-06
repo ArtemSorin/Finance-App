@@ -11,7 +11,7 @@ class Valutes extends StatefulWidget {
 }
 
 class _MyAppState extends State<Valutes> {
-  late Future<CoinsList> futureCoinsList;
+  late Future<Valute> futureCoinsList;
   final ct = 3;
   final symbol = '₽';
 
@@ -128,7 +128,6 @@ class _MyAppState extends State<Valutes> {
             )),
       ),
     ];
-
     return MaterialApp(
       title: 'Fetch Data Example',
       theme: ThemeData(
@@ -155,7 +154,7 @@ class _MyAppState extends State<Valutes> {
           ),
         ),
         body: Center(
-          child: FutureBuilder<CoinsList>(
+          child: FutureBuilder<Valute>(
             future: futureCoinsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -186,7 +185,7 @@ class _MyAppState extends State<Valutes> {
                       ),
                       subtitle: const Text('Japanese yen'),
                       trailing: Text(symbol +
-                          (1 / snapshot.data!.title['AUD'])
+                          (1 / snapshot.data!.rates.values.elementAt(0))
                               .toStringAsFixed(ct)),
                     ),
                     ListTile(
@@ -200,7 +199,7 @@ class _MyAppState extends State<Valutes> {
                       ),
                       subtitle: const Text('Azerbaijani manat'),
                       trailing: Text(symbol +
-                          (1 / snapshot.data!.title['AZN'])
+                          (1 / snapshot.data!.rates.values.elementAt(1))
                               .toStringAsFixed(ct)),
                     ),
                     ListTile(
@@ -214,7 +213,7 @@ class _MyAppState extends State<Valutes> {
                       ),
                       subtitle: const Text('Pound sterling'),
                       trailing: Text(symbol +
-                          (1 / snapshot.data!.title['GBP'])
+                          (1 / snapshot.data!.rates.values.elementAt(2))
                               .toStringAsFixed(ct)),
                     ),
                     ListTile(
@@ -228,7 +227,7 @@ class _MyAppState extends State<Valutes> {
                       ),
                       subtitle: const Text('Euro'),
                       trailing: Text(symbol +
-                          (1 / snapshot.data!.title['EUR'])
+                          (1 / snapshot.data!.rates.values.elementAt(11))
                               .toStringAsFixed(ct)),
                     ),
                     ListTile(
@@ -242,7 +241,7 @@ class _MyAppState extends State<Valutes> {
                       ),
                       subtitle: const Text('Swiss franc'),
                       trailing: Text(symbol +
-                          (1 / snapshot.data!.title['CHF'])
+                          (1 / snapshot.data!.rates.values.elementAt(0))
                               .toStringAsFixed(ct)),
                     ),
                   ],
